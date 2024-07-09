@@ -108,6 +108,7 @@
           }
 
           try {
+              console.log("In submit before response");
               const response = await axios.post('http://13.234.232.78:3000/user/signup', {
                   name: name,
                   email: email,
