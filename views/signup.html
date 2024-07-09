@@ -113,7 +113,7 @@
                   email: email,
                   password: password
               });
-
+              console.log("Axios response:", response);
               if (response.status === 201) {
                   window.location.href = 'http://13.234.232.78:3000/user/login';
               } else {
