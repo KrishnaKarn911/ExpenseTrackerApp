@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expenses Table</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+    tfoot {
+      font-weight: bold;
+    }
+    .button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Expenses by Month</h2>
+  <h3 id="monthHeading"></h3>
+  <table id="expensesTable">
+    <thead>
+      <tr>
+        <th>Month and Year</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody id="expensesBody">
+   
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Total Amount</td>
+        <td id="totalAmount"></td>
+      </tr>
+    </tfoot>
+  </table>
+  <button class="button" onclick="previousDownloads()">Previous Downloads</button>
+  <button class="button" onclick="downloadJSON()">Download JSON</button>
+
+  <ul id="fileURLList"></ul>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    
+    function populateTable(data) {
+      //console.log(data);
+      const expensesBody = document.getElementById('expensesBody');
+      const totalAmountElement = document.getElementById('totalAmount');
+      const monthHeading = document.getElementById('monthHeading');
+      
+      let grandTotal = 0;
+
+      for (const [key, value] of Object.entries(data)) {
+        const { expenses, totalAmount } = value;
+        grandTotal += totalAmount;
+
+        expenses.forEach(expense => {
+          const row = document.createElement('tr');
+          const monthCell = document.createElement('td');
+          monthHeading.innerText=key;
+          monthCell.textContent = key;
+          row.appendChild(monthCell);
+
+          const descCell = document.createElement('td');
+          descCell.textContent = expense.description;
+          row.appendChild(descCell);
+
+          const categoryCell = document.createElement('td');
+          categoryCell.textContent = expense.category;
+          row.appendChild(categoryCell);
+
+          const amountCell = document.createElement('td');
+          amountCell.textContent = expense.amount;
+          row.appendChild(amountCell);
+
+          expensesBody.appendChild(row);
+        });
+      }
+
+      totalAmountElement.textContent = grandTotal;
+    }
+
+    // Function to download data as CSV
+    async function previousDownloads() {
+
+      try{
+        const token = localStorage.getItem('token');
+          const response = await axios.get('http://13.234.232.78:3000/exp/links',{headers :{'Authorization': token}})
+         // console.log(response.data.links);
+          const fileURLs = response.data.links;
+          const listContainer = document.getElementById('fileURLList');
+          listContainer.innerHTML = ''; 
+
+          fileURLs.forEach(fileURL => {
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.textContent = fileURL;
+          link.target = '_blank'; // Open link in a new tab
+          listItem.appendChild(link);
+          listContainer.appendChild(listItem);
+          console.log('previous downloads, fetched successfully')
+       });
+  }catch(err){
+        console.log(err);
+      }
+}
+
+    // Function to download data as JSON
+    async function downloadJSON() {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://13.234.232.78:3000/exp/download', {
+        headers: { "Authorization": token }})
+
+        const fileUrl = response.data.data.Location;
+    //  console.log(fileUrl);
+
+  // Fetch the actual file from S3
+       const fileResponse = await axios.get(fileUrl);
+  
+  // Create a blob from the fetched file data
+      const jsonContent = JSON.stringify(fileResponse.data, null, 2);
+      const blob = new Blob([jsonContent], { type: 'application/json' });
+  
+  // Create a download link for the blob
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.setAttribute('hidden', '');
+  a.setAttribute('href', url);
+  a.setAttribute('download', 'expenses.json');
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+    }
+
+    // Populate the table on page load
+    document.addEventListener('DOMContentLoaded', (e) => {
+      e.preventDefault();
+      console.log("In window function");
+      
+      const data = localStorage.getItem('reportsData')
+      populateTable(JSON.parse(data));
+    });
+  </script>
+</body>
+</html>

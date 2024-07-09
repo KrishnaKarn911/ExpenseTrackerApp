@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BootStrap Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="expense.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Expense Tracker</a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" id="nav-itemID">
+                    <button id="buy-premium-btn" class="btn btn-success nav-link">BUY PREMIUM</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <form class="expense-tracker" id="expenseForm" method="POST" action="/exp/expense">
+            <label for="description" class="form-label">DESCRIPTION</label>
+            <input type="text" id="description" name="description" class="form-control">
+
+            <label for="amount" class="form-label">AMOUNT</label>
+            <div class="input-group">
+                <div class="input-group-text">$</div>
+                <input type="number" id="amount" name="amount" class="form-control">
+            </div>
+            
+            <label for="category" class="form-label">CHOOSE FROM LIST</label>
+            <select id="category" class="form-select" name="category">
+                <option>MOVIES</option>
+                <option>FOOD</option>
+                <option>TRAVEL</option>
+                <option>MISCELLANEOUS</option>
+            </select>
+            <button type="submit" id="add-btn" class="btn btn-primary mt-3">ADD EXPENSES</button>
+        </form>
+        <div id="div-message">
+            <h3 id="message"></h3>
+        </div>
+    </div>
+    <div id="itemsPage">
+        <label for="itemsPerPage">Items per page:</label>
+        <input type="number" id="itemsPerPageInput" min="1" value="2">
+        <button id="setItemsPerPageBtn">Set</button>
+    </div>
+    <div class="container mt-4">
+        <h3>EXPENSES TABLE</h3>
+        <table id="expenseTable" class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="pagination-controls" class="pagination"></div>
+
+    </div>
+
+    <div id="leaderboard" class="container mt-4">
+        <h1 id="leaderboard-heading">LEADERBOARD</h1>
+    </div>
+
+    <script src="expense.js"></script>
+</body>
+</html>
