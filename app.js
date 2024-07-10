@@ -40,7 +40,8 @@ const corsOptions = {
     origin: '*',
     optionsSuccessStatus: 200
   };
-  
+
+  console.log("Checking Built Now working")
   app.use(cors(corsOptions));
 
 
