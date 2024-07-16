@@ -24,7 +24,7 @@ form.addEventListener('submit', async (e) => {
             return;
         }
 
-        const response = await axios.post('http://localhost:3000/exp/expense', {
+        const response = await axios.post('http://13.232.126.5:3000/exp/expense', {
             description: description,
             amount: amount,
             category: category
@@ -58,7 +58,7 @@ async function fetchExpenses(page = 1, limit = 2) {
             premiumUser();
         }
 
-        const response = await axios.get(`http://localhost:3000/exp/expense?page=${page}&limit=${limit}`, { headers: { "Authorization": token } });
+        const response = await axios.get(`http://13.232.126.5:3000/exp/expense?page=${page}&limit=${limit}`, { headers: { "Authorization": token } });
         const totalPages = response.data.data.totalPages;
 
         const expenseArray = response.data.data.expense;
@@ -116,7 +116,7 @@ async function deleteExpense(expenseId) {
             return;
         }
 
-        await axios.delete(`http://localhost:3000/exp/expense/${expenseId}`, { headers: { "Authorization": token } });
+        await axios.delete(`http://13.232.126.5:3000/exp/expense/${expenseId}`, { headers: { "Authorization": token } });
     } catch (err) {
         console.error("Error deleting expense:", err);
     }
@@ -148,7 +148,7 @@ document.getElementById('buy-premium-btn').addEventListener('click', async () =>
             return;
         }
 
-        const response = await axios.get('http://localhost:3000/purchase/premiummembership', {
+        const response = await axios.get('http://13.232.126.5:3000/purchase/premiummembership', {
             headers: { "Authorization": token }
         });
 
@@ -158,7 +158,7 @@ document.getElementById('buy-premium-btn').addEventListener('click', async () =>
             "description": "Premium Membership",
             "order_id": response.data.order.id,
             "handler": async function (response) {
-                await axios.post('http://localhost:3000/purchase/updateTransactionStatus', {
+                await axios.post('http://13.232.126.5:3000/purchase/updateTransactionStatus', {
                     payment_id: response.razorpay_payment_id,
                     order_id: response.razorpay_order_id,
                     signature: response.razorpay_signature
@@ -237,7 +237,7 @@ function premiumUser() {
 async function showleaderboard() {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/premium/showleaderboard', { headers: { "Authorization": token } });
+        const response = await axios.get('http://13.232.126.5:3000/premium/showleaderboard', { headers: { "Authorization": token } });
         
         const leaderboardElement = document.getElementById('leaderboard');
         leaderboardElement.innerHTML = ""; // Clear previous leaderboard data
@@ -260,14 +260,14 @@ async function fetchReports() {
             return;
         }
 
-        const response = await axios.get('http://localhost:3000/premium/reports', {
+        const response = await axios.get('http://13.232.126.5:3000/premium/reports', {
             headers: { "Authorization": token }
         });
         
        localStorage.setItem('reportsData', JSON.stringify(response.data.result))
         if (response.data.status === 'success') {
             console.log('In frontend fetchReport before redirecting');
-            window.location.href = 'http://localhost:3000/premium/reportsPage'
+            window.location.href = 'http://13.232.126.5:3000/premium/reportsPage'
         } else {
             console.error('Error fetching reports:', response.data.message);
         }
