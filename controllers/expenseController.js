@@ -69,7 +69,7 @@ exports.getExpense = catchAsync(async(req,res,next)=>{
     });
 
     if (!expense) {
-        return next(new AppError('No Expense found with that id', 404));
+        return next(new AppError('No Expense found', 404));
     }
     res.status(200).json({
         status: 'success',
