@@ -107,7 +107,7 @@
 
       try{
         const token = localStorage.getItem('token');
-          const response = await axios.get('http://13.232.126.5:3000/exp/links',{headers :{'Authorization': token}})
+          const response = await axios.get('http://3.110.159.176:3000/exp/links',{headers :{'Authorization': token}})
          // console.log(response.data.links);
           const fileURLs = response.data.links;
           const listContainer = document.getElementById('fileURLList');
@@ -131,7 +131,7 @@
     // Function to download data as JSON
     async function downloadJSON() {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://13.232.126.5:3000/exp/download', {
+      const response = await axios.get('http://3.110.159.176:3000/exp/download', {
         headers: { "Authorization": token }})
 
         const fileUrl = response.data.data.Location;
