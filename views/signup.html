@@ -96,7 +96,7 @@
           const password = document.getElementById('password').value;
           const confirmPassword = document.getElementById('confirmPassword').value;
           
-          // Clear previous error message
+          
           const messageElement = document.getElementById('message');
           messageElement.style.display = 'none';
           messageElement.textContent = '';
@@ -108,15 +108,15 @@
           }
 
           try {
-              console.log("In submit before response");
-              const response = await axios.post('http://3.110.159.176:3000/user/signup', {
+             
+              const response = await axios.post('http://13.201.87.73:3000/user/signup', {
                   name: name,
                   email: email,
                   password: password
               });
-              console.log("Axios response:", response);
+           
               if (response.status === 201) {
-                  window.location.href = 'http://3.110.159.176:3000/user/login';
+                  window.location.href = 'http://13.201.87.73:3000/user/login';
               } else {
                   messageElement.textContent = 'Signup failed. Please try again.';
                   messageElement.style.display = 'block';
