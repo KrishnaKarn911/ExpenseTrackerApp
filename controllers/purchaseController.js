@@ -17,7 +17,7 @@ exports.purchasepremium = async(req,res)=>{
           });
           const amount = 2500;
           var options = {
-            amount: amount,  // amount in the smallest currency unit
+            amount: amount,  
             currency: "INR",
             receipt: "order_rcptid_11"
           };

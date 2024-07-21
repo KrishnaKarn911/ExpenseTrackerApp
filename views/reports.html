@@ -135,14 +135,10 @@
         headers: { "Authorization": token }})
 
         const fileUrl = response.data.data.Location;
-    //  console.log(fileUrl);
-
-  // Fetch the actual file from S3
+    
        const fileResponse = await axios.get(fileUrl);
-  
-  // Create a blob from the fetched file data
-      const jsonContent = JSON.stringify(fileResponse.data, null, 2);
-      const blob = new Blob([jsonContent], { type: 'application/json' });
+       const jsonContent = JSON.stringify(fileResponse.data, null, 2);
+       const blob = new Blob([jsonContent], { type: 'application/json' });
   
   // Create a download link for the blob
   const url = URL.createObjectURL(blob);
