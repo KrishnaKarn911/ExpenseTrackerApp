@@ -12,10 +12,6 @@ exports.userAuthorisation = catchAsync(async(req, res, next) => {
             });
         }
 
-        // Remove 'Bearer ' prefix if it exists
-        // if (token.startsWith('Bearer ')) {
-        //     token = token.slice(7, token.length);
-        // }
 
         const userObj = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findByPk(userObj.id);
